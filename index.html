@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>For Shiny ❤️</title>
+  <meta name="description" content="A tiny interactive love letter created just for Shiny.">
+
+  <!-- Google Fonts with fallbacks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background canvas -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Audio control toggle -->
+  <button id="audio-toggle" class="audio-btn" aria-label="Toggle ambient sound" title="Toggle Sound">
+    <svg class="icon-sound-on" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    <svg class="icon-sound-off hidden" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <line x1="23" y1="9" x2="17" y2="15"></line>
+      <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+  </button>
+
+  <!-- Subtle Scene Indicator -->
+  <div class="scene-progress" aria-hidden="true">
+    <div class="progress-dot active" data-step="1"></div>
+    <div class="progress-dot" data-step="2"></div>
+    <div class="progress-dot" data-step="3"></div>
+    <div class="progress-dot" data-step="4"></div>
+    <div class="progress-dot" data-step="5"></div>
+  </div>
+
+  <main class="app-container">
+
+    <!-- SCENE 1: THE HOOK -->
+    <section id="scene-1" class="scene active" aria-label="Welcome screen">
+      <div class="scene-content">
+        <p class="greeting-text">Hey, Shiny...</p>
+        
+        <div id="hook-heart-wrapper" class="heart-hero-container" role="button" tabindex="0" aria-label="Interactive glowing heart. Tap for magic.">
+          <div class="orbiting-sparkle s1">✦</div>
+          <div class="orbiting-sparkle s2">✨</div>
+          <div class="orbiting-sparkle s3">✦</div>
+          
+          <div class="glow-aura"></div>
+          
+          <svg class="hero-heart-svg" viewBox="0 0 100 90">
+            <defs>
+              <linearGradient id="heartGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff2a70" />
+                <stop offset="50%" stop-color="#d81b60" />
+                <stop offset="100%" stop-color="#7b2cbf" />
+              </linearGradient>
+              <filter id="heartGlow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <path d="M10,30 A20,20 0 0,1 50,30 A20,20 0 0,1 90,30 Q90,60 50,85 Q10,60 10,30 Z" fill="url(#heartGrad1)" filter="url(#heartGlow)"/>
+          </svg>
+        </div>
+
+        <p class="sub-text">For you ❤️</p>
+        
+        <button id="btn-scene-1" class="btn-primary glow-button" aria-label="Open the surprise">
+          <span>Open the surprise ✦</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 2: THE SECRET GIFT -->
+    <section id="scene-2" class="scene" aria-label="Secret Gift Box">
+      <div class="scene-content">
+        <h2 class="scene-title">A little something...</h2>
+        <p class="scene-instruction">Tap the gift to open ✨</p>
+
+        <div id="gift-box" class="gift-box-wrapper" role="button" tabindex="0" aria-label="Tap to open gift box">
+          <div class="gift-glow-effect"></div>
+          <div class="gift-particles-emitter"></div>
+          
+          <div class="gift-lid">
+            <div class="ribbon-bow">
+              <div class="bow-left"></div>
+              <div class="bow-right"></div>
+              <div class="bow-center"></div>
+            </div>
+            <div class="lid-top"></div>
+            <div class="lid-ribbon"></div>
+          </div>
+          
+          <div class="gift-body">
+            <div class="body-ribbon-v"></div>
+            <div class="body-ribbon-h"></div>
+            <div class="gift-inner-light"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 3: THE MESSAGE -->
+    <section id="scene-3" class="scene" aria-label="Intimate message">
+      <div class="scene-content">
+        <div class="glass-card message-card">
+          <div class="card-sparkle-top">✦</div>
+          <div class="card-inner-glow"></div>
+          
+          <div id="message-container" class="message-lines-wrapper">
+            <p class="msg-line" data-delay="300">Hi, Shiny ❤️</p>
+            <p class="msg-line" data-delay="1600">I don't have a big speech.</p>
+            <p class="msg-line highlight-line" data-delay="3200">I just miss you.</p>
+            <p class="msg-line" data-delay="4800">So I made this little place for you.</p>
+          </div>
+        </div>
+
+        <button id="btn-scene-3" class="btn-primary glow-button fade-in-btn hidden" aria-label="Continue to next scene">
+          <span>There’s more →</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 4: WHY YOU -->
+    <section id="scene-4" class="scene" aria-label="Interactive memory cards">
+      <div class="scene-content wide-content">
+        <h2 class="scene-title-sm">Why you? ✨</h2>
+        <p class="scene-instruction">Tap each card to explore</p>
+
+        <div class="cards-grid">
+          <div class="memory-card float-c1" data-card-id="1" role="button" tabindex="0" aria-label="Memory card 1: Your smile.">
+            <div class="card-glow"></div>
+            <span class="card-icon">✨</span>
+            <p class="card-text">Your smile.</p>
+            <div class="card-check hidden">✓</div>
+          </div>
+
+          <div class="memory-card float-c2" data-card-id="2" role="button" tabindex="0" aria-label="Memory card 2: Your energy.">
+            <div class="card-glow"></div>
+            <span class="card-icon">⚡</span>
+            <p class="card-text">Your energy.</p>
+            <div class="card-check hidden">✓</div>
+          </div>
+
+          <div class="memory-card float-c3" data-card-id="3" role="button" tabindex="0" aria-label="Memory card 3: The little things.">
+            <div class="card-glow"></div>
+            <span class="card-icon">🌙</span>
+            <p class="card-text">The little things.</p>
+            <div class="card-check hidden">✓</div>
+          </div>
+
+          <div class="memory-card float-c4" data-card-id="4" role="button" tabindex="0" aria-label="Memory card 4: Just you.">
+            <div class="card-glow"></div>
+            <span class="card-icon">💖</span>
+            <p class="card-text">Just you.</p>
+            <div class="card-check hidden">✓</div>
+          </div>
+        </div>
+
+        <button id="btn-scene-4" class="btn-primary glow-button hidden" aria-label="Proceed to climax">
+          <span>Okay... one last thing ❤️</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 5: THE EMOTIONAL MOMENT (CLIMAX) -->
+    <section id="scene-5" class="scene" aria-label="The Emotional Moment">
+      <div class="scene-content">
+        <div id="climax-intro">
+          <h2 class="climax-title">You're special.</h2>
+          <p class="climax-sub">That’s all I wanted to say.</p>
+        </div>
+
+        <div id="climax-heart-wrapper" class="climax-heart-container" role="button" tabindex="0" aria-label="Touch the heart for the finale">
+          <div class="climax-ring r1"></div>
+          <div class="climax-ring r2"></div>
+          <div class="climax-pulse-glow"></div>
+          
+          <svg class="climax-heart-svg" viewBox="0 0 100 90">
+            <path d="M10,30 A20,20 0 0,1 50,30 A20,20 0 0,1 90,30 Q90,60 50,85 Q10,60 10,30 Z" fill="url(#heartGrad1)" filter="url(#heartGlow)"/>
+          </svg>
+          <span class="climax-prompt">Touch the heart</span>
+        </div>
+
+        <div id="climax-reveal" class="climax-reveal-container hidden">
+          <div class="glass-card climax-card">
+            <p class="final-quote">“I hope this made you smile. ❤️”</p>
+            <p class="final-signature">— someone who misses you</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Hidden Secret Easter Egg Modal -->
+  <div id="easter-egg-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-label="Secret Note">
+    <div class="glass-card modal-card">
+      <div class="modal-sparkle">🍫✨</div>
+      <h3 class="modal-title">Secret Note</h3>
+      <p class="modal-text">P.S. The chocolate is sweet...<br>but you're sweeter. ❤️</p>
+      <button id="btn-close-modal" class="btn-secondary">Close with a smile 😊</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

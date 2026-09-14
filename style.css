@@ -1,0 +1,862 @@
+/* ==========================================================================
+   SHINY LOVE - DESIGN SYSTEM & STYLESHEET
+   A rich, modern, romantic mobile-first experience.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. COLOR PALETTE & DESIGN TOKENS
+   -------------------------------------------------------------------------- */
+:root {
+  --bg-dark: #0f0c1b;
+  --bg-purple: #1a0933;
+  --color-violet: #7b2cbf;
+  --color-pink: #ff2a70;
+  --color-magenta: #d81b60;
+  --color-rose: #ff758c;
+  --color-glow: rgba(255, 42, 112, 0.4);
+  --color-glow-subtle: rgba(123, 44, 191, 0.3);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.78);
+  --text-muted: rgba(255, 255, 255, 0.55);
+
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL RESETS & BASE STYLES
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   3. BACKGROUND CANVAS & AUDIO CONTROL
+   -------------------------------------------------------------------------- */
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.audio-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s var(--ease-spring), background 0.3s ease;
+}
+
+.audio-btn:hover, .audio-btn:focus-visible {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+}
+
+/* Scene progress dots */
+.scene-progress {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 90;
+  display: flex;
+  gap: 8px;
+}
+
+.progress-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.5s var(--ease-smooth);
+}
+
+.progress-dot.active {
+  width: 18px;
+  border-radius: 4px;
+  background: var(--color-pink);
+  box-shadow: 0 0 10px var(--color-pink);
+}
+
+/* --------------------------------------------------------------------------
+   4. LAYOUT & SCENE CONTAINER
+   -------------------------------------------------------------------------- */
+.app-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(24px) scale(0.96);
+  filter: blur(10px);
+  transition: opacity 0.7s var(--ease-smooth),
+              transform 0.7s var(--ease-smooth),
+              filter 0.7s var(--ease-smooth),
+              visibility 0.7s;
+}
+
+.scene.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+.scene.exiting {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-24px) scale(0.96);
+  filter: blur(10px);
+}
+
+.scene-content {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.wide-content {
+  max-width: 440px;
+}
+
+/* Helper Utilities */
+.hidden {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. BUTTONS & INTERACTIVE ELEMENTS
+   -------------------------------------------------------------------------- */
+.btn-primary {
+  position: relative;
+  padding: 16px 36px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, var(--color-pink), var(--color-magenta));
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(255, 42, 112, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease, filter 0.3s ease;
+  outline: none;
+  overflow: hidden;
+}
+
+.btn-primary:hover, .btn-primary:focus-visible {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(255, 42, 112, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.btn-primary:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+}
+
+.btn-secondary {
+  padding: 12px 24px;
+  border-radius: 30px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s var(--ease-spring);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.02);
+}
+
+/* --------------------------------------------------------------------------
+   6. SCENE 1: THE HOOK
+   -------------------------------------------------------------------------- */
+.greeting-text {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-style: italic;
+  color: var(--text-primary);
+  text-shadow: 0 0 20px var(--color-glow);
+  animation: fadeInDown 1s var(--ease-smooth) forwards;
+}
+
+.sub-text {
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+.heart-hero-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.hero-heart-svg {
+  width: 100px;
+  height: 90px;
+  animation: pulseHeart 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 16px var(--color-pink));
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.heart-hero-container:hover .hero-heart-svg,
+.heart-hero-container:focus-visible .hero-heart-svg {
+  transform: scale(1.12);
+}
+
+.glow-aura {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-pink) 0%, rgba(216, 27, 96, 0.2) 50%, transparent 70%);
+  filter: blur(20px);
+  animation: pulseGlow 2.4s ease-in-out infinite;
+}
+
+.orbiting-sparkle {
+  position: absolute;
+  color: #ffffff;
+  font-size: 14px;
+  pointer-events: none;
+  text-shadow: 0 0 8px #ffffff;
+}
+
+.s1 { top: 10px; left: 10px; animation: orbit 4s linear infinite; }
+.s2 { bottom: 15px; right: 10px; animation: orbit 5s linear infinite reverse; }
+.s3 { top: 50%; right: 0px; animation: orbit 6s linear infinite; }
+
+/* --------------------------------------------------------------------------
+   7. SCENE 2: THE SECRET GIFT BOX
+   -------------------------------------------------------------------------- */
+.scene-title {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  font-weight: 600;
+}
+
+.scene-title-sm {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.scene-instruction {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: -12px;
+}
+
+.gift-box-wrapper {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  perspective: 600px;
+}
+
+.gift-glow-effect {
+  position: absolute;
+  bottom: 0;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-pink) 0%, rgba(123, 44, 191, 0.3) 60%, transparent 80%);
+  filter: blur(25px);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.gift-lid {
+  position: relative;
+  width: 144px;
+  height: 38px;
+  background: linear-gradient(135deg, #ff4081, #d81b60);
+  border-radius: 8px 8px 4px 4px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+  z-index: 3;
+  transition: transform 0.8s var(--ease-spring), opacity 0.8s ease;
+  transform-origin: top left;
+}
+
+.lid-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.lid-ribbon {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff, #ffe0ec);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+.ribbon-bow {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 24px;
+}
+
+.bow-left, .bow-right {
+  position: absolute;
+  top: 0;
+  width: 22px;
+  height: 20px;
+  border: 4px solid #ffffff;
+  border-radius: 50% 50% 0 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.bow-left { left: 0; transform: rotate(-20deg); }
+.bow-right { right: 0; transform: scaleX(-1) rotate(-20deg); }
+
+.bow-center {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.gift-body {
+  position: relative;
+  width: 136px;
+  height: 96px;
+  background: linear-gradient(135deg, #c2185b, #7b1fa2);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  z-index: 2;
+  overflow: hidden;
+}
+
+.body-ribbon-v {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff, #ffe0ec);
+}
+
+.body-ribbon-h {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(135deg, #ffffff, #ffe0ec);
+}
+
+.gift-inner-light {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #ffffff 0%, var(--color-pink) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(10px);
+  opacity: 0;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+  z-index: 1;
+}
+
+/* Open gift animation state */
+.gift-box-wrapper.opened .gift-lid {
+  transform: translateY(-90px) rotate(-35deg) scale(0.9);
+  opacity: 0.85;
+}
+
+.gift-box-wrapper.opened .gift-inner-light {
+  transform: translateX(-50%) scale(2.2);
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   8. SCENE 3: THE MESSAGE (GLASS CARD)
+   -------------------------------------------------------------------------- */
+.glass-card {
+  position: relative;
+  width: 100%;
+  padding: 32px 24px;
+  border-radius: 24px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+}
+
+.message-card {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-sparkle-top {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  color: var(--color-rose);
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.card-inner-glow {
+  position: absolute;
+  top: -40%;
+  left: -40%;
+  width: 180%;
+  height: 180%;
+  background: radial-gradient(circle, rgba(255, 42, 112, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.message-lines-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.msg-line {
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth);
+}
+
+.msg-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.msg-line.highlight-line {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-style: italic;
+  color: var(--color-rose);
+  text-shadow: 0 0 12px rgba(255, 117, 140, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   9. SCENE 4: WHY YOU (FLOATING INTERACTIVE CARDS)
+   -------------------------------------------------------------------------- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+  margin: 12px 0 20px;
+}
+
+.memory-card {
+  position: relative;
+  padding: 24px 16px;
+  border-radius: 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.4s var(--ease-spring), border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Unique idle floating animations */
+.float-c1 { animation: floatCard1 4.5s ease-in-out infinite; }
+.float-c2 { animation: floatCard2 5.2s ease-in-out infinite; }
+.float-c3 { animation: floatCard3 4.8s ease-in-out infinite; }
+.float-c4 { animation: floatCard4 5.5s ease-in-out infinite; }
+
+.memory-card:hover, .memory-card:focus-visible {
+  transform: translateY(-4px) scale(1.04) !important;
+  border-color: rgba(255, 42, 112, 0.5);
+  box-shadow: 0 12px 30px rgba(255, 42, 112, 0.3);
+  outline: none;
+}
+
+.memory-card.visited {
+  border-color: var(--color-pink);
+  background: rgba(255, 42, 112, 0.12);
+  box-shadow: 0 0 20px rgba(255, 42, 112, 0.35);
+}
+
+.card-icon {
+  font-size: 1.6rem;
+}
+
+.card-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-check {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-pink);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px var(--color-pink);
+  animation: popIn 0.3s var(--ease-spring) forwards;
+}
+
+/* --------------------------------------------------------------------------
+   10. SCENE 5: THE EMOTIONAL MOMENT (CLIMAX)
+   -------------------------------------------------------------------------- */
+.climax-title {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 600;
+}
+
+.climax-sub {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.climax-heart-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.climax-heart-svg {
+  width: 110px;
+  height: 100px;
+  filter: drop-shadow(0 0 24px var(--color-pink));
+  animation: pulseHeart 2s ease-in-out infinite;
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.climax-heart-container:hover .climax-heart-svg {
+  transform: scale(1.15);
+}
+
+.climax-prompt {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-rose);
+  font-weight: 600;
+  animation: pulseGlow 2s infinite;
+}
+
+.climax-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid var(--color-pink);
+  pointer-events: none;
+}
+
+.r1 { width: 140px; height: 140px; animation: expandRing 2.4s ease-out infinite; }
+.r2 { width: 170px; height: 170px; animation: expandRing 2.4s ease-out infinite 0.8s; }
+
+.climax-pulse-glow {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-pink) 0%, rgba(123, 44, 191, 0.4) 60%, transparent 80%);
+  filter: blur(25px);
+}
+
+/* Finale Reveal Card */
+.climax-reveal-container {
+  width: 100%;
+  animation: fadeInUp 1s var(--ease-smooth) forwards;
+}
+
+.climax-card {
+  padding: 36px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  border-color: rgba(255, 42, 112, 0.3);
+  box-shadow: 0 0 40px rgba(255, 42, 112, 0.25);
+}
+
+.final-quote {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: #ffffff;
+  line-height: 1.4;
+  text-shadow: 0 0 16px var(--color-glow);
+}
+
+.final-signature {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* --------------------------------------------------------------------------
+   11. EASTER EGG MODAL
+   -------------------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
+  background: rgba(15, 12, 27, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.modal-card {
+  max-width: 340px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  border-color: rgba(255, 117, 140, 0.4);
+  box-shadow: 0 0 50px rgba(255, 42, 112, 0.4);
+  animation: popIn 0.5s var(--ease-spring) forwards;
+}
+
+.modal-sparkle {
+  font-size: 2.2rem;
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--color-rose);
+}
+
+.modal-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   12. KEYFRAME ANIMATIONS
+   -------------------------------------------------------------------------- */
+@keyframes pulseHeart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.12); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(55px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(55px) rotate(-360deg); }
+}
+
+@keyframes expandRing {
+  0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+}
+
+@keyframes floatCard1 {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes floatCard2 {
+  0%, 100% { transform: translateY(0px) rotate(2deg); }
+  50% { transform: translateY(-10px) rotate(-1deg); }
+}
+
+@keyframes floatCard3 {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50% { transform: translateY(-7px) rotate(2deg); }
+}
+
+@keyframes floatCard4 {
+  0%, 100% { transform: translateY(0px) rotate(1.5deg); }
+  50% { transform: translateY(-9px) rotate(-2deg); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   13. ACCESSIBILITY & PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .orbiting-sparkle, .climax-ring, .gift-glow-effect {
+    display: none !important;
+  }
+}
