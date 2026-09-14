@@ -2,66 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>For Shiny ❤️</title>
-  <meta name="description" content="A tiny interactive love letter created just for Shiny.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>For Shiny ❤️ | A Private Memory Experience</title>
+  <meta name="description" content="A private digital memory experience created by Jagadeeshwar for Shiny.">
 
-  <!-- Google Fonts with fallbacks -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Ambient background canvas -->
+  <!-- Dynamic Canvas Background -->
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
-  <!-- Audio control toggle -->
-  <button id="audio-toggle" class="audio-btn" aria-label="Toggle ambient sound" title="Toggle Sound">
-    <svg class="icon-sound-on" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Ambient Sound Toggle -->
+  <button id="audio-toggle" class="audio-btn" aria-label="Toggle ambient music" title="Toggle Sound">
+    <svg class="icon-sound-on hidden" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
       <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
     </svg>
-    <svg class="icon-sound-off hidden" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg class="icon-sound-off" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
       <line x1="23" y1="9" x2="17" y2="15"></line>
       <line x1="17" y1="9" x2="23" y2="15"></line>
     </svg>
+    <span class="sound-label">Music</span>
   </button>
 
-  <!-- Subtle Scene Indicator -->
-  <div class="scene-progress" aria-hidden="true">
-    <div class="progress-dot active" data-step="1"></div>
-    <div class="progress-dot" data-step="2"></div>
-    <div class="progress-dot" data-step="3"></div>
-    <div class="progress-dot" data-step="4"></div>
-    <div class="progress-dot" data-step="5"></div>
-  </div>
+  <!-- Scene Navigation Progress Bar (Hidden until password unlock) -->
+  <nav id="scene-progress-nav" class="scene-progress hidden" aria-label="Memory timeline navigation">
+    <button class="progress-dot active" data-step="0" title="Private Entry" aria-label="Scene 0: Password Gate"></button>
+    <button class="progress-dot" data-step="1" title="The Beginning" aria-label="Scene 1: The Beginning"></button>
+    <button class="progress-dot" data-step="2" title="The Little World" aria-label="Scene 2: The Little World"></button>
+    <button class="progress-dot" data-step="3" title="First Memories" aria-label="Scene 3: First Memories"></button>
+    <button class="progress-dot" data-step="4" title="Together" aria-label="Scene 4: Together"></button>
+    <button class="progress-dot" data-step="5" title="The Closeness" aria-label="Scene 5: The Closeness"></button>
+    <button class="progress-dot" data-step="6" title="The Last Time" aria-label="Scene 6: The Last Time"></button>
+    <button class="progress-dot" data-step="7" title="From Far Away" aria-label="Scene 7: From Far Away"></button>
+    <button class="progress-dot" data-step="8" title="Little Secrets" aria-label="Scene 8: Little Secrets"></button>
+    <button class="progress-dot" data-step="9" title="Things I Miss" aria-label="Scene 9: Things I Miss"></button>
+    <button class="progress-dot" data-step="10" title="Final Message" aria-label="Scene 10: Final Heart"></button>
+    <button class="progress-dot" data-step="11" title="Love Game" aria-label="Scene 11: Love Game"></button>
+    <button class="progress-dot" data-step="12" title="The Reward" aria-label="Scene 12: Hidden Reward"></button>
+    <button class="progress-dot" data-step="13" title="One More Thing" aria-label="Scene 13: One More Thing"></button>
+    <button class="progress-dot" data-step="14" title="Our Little Future" aria-label="Scene 14: Our Little Future"></button>
+  </nav>
 
+  <!-- App Wrapper -->
   <main class="app-container">
 
-    <!-- SCENE 1: THE HOOK -->
-    <section id="scene-1" class="scene active" aria-label="Welcome screen">
-      <div class="scene-content">
-        <p class="greeting-text">Hey, Shiny...</p>
-        
+    <!-- SCENE 0: PRIVATE ENTRY (PASSWORD GATE) -->
+    <section id="scene-gate" class="scene active" aria-label="Private Access Gate">
+      <div class="scene-content flex-center">
+        <div class="glass-card gate-card">
+          <div class="sparkle-badge">✦ Private ✦</div>
+          <p class="gate-subheading">Something I made for you.</p>
+          <h1 class="gate-title">Enter the little secret</h1>
+
+          <form id="gate-form" class="gate-form" onsubmit="return false;">
+            <div class="input-wrapper">
+              <input type="password" id="gate-pass" class="gate-input" placeholder="Enter key..." maxlength="6" autocomplete="off" inputmode="numeric" aria-label="Enter password">
+              <div class="input-glow"></div>
+            </div>
+            <button type="submit" id="btn-gate-submit" class="btn-primary glow-button" aria-label="Open experience">
+              <span>Open it ❤️</span>
+            </button>
+          </form>
+          <p id="gate-error" class="pass-error hidden" role="alert">Not quite... try again ❤️</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 1: THE BEGINNING -->
+    <section id="scene-1" class="scene" aria-label="The Beginning">
+      <div class="scene-content flex-center">
+        <p class="greeting-text animate-fade-in">Hey, Shiny...</p>
+
         <div id="hook-heart-wrapper" class="heart-hero-container" role="button" tabindex="0" aria-label="Interactive glowing heart. Tap for magic.">
           <div class="orbiting-sparkle s1">✦</div>
           <div class="orbiting-sparkle s2">✨</div>
           <div class="orbiting-sparkle s3">✦</div>
-          
           <div class="glow-aura"></div>
-          
-          <svg class="hero-heart-svg" viewBox="0 0 100 90">
+          <svg class="hero-heart-svg" viewBox="0 0 100 90" aria-hidden="true">
             <defs>
               <linearGradient id="heartGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ff2a70" />
+                <stop offset="0%" stop-color="#ff3b7b" />
                 <stop offset="50%" stop-color="#d81b60" />
                 <stop offset="100%" stop-color="#7b2cbf" />
               </linearGradient>
               <filter id="heartGlow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
                 <feMerge>
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
@@ -72,115 +104,395 @@
           </svg>
         </div>
 
-        <p class="sub-text">For you ❤️</p>
-        
-        <button id="btn-scene-1" class="btn-primary glow-button" aria-label="Open the surprise">
+        <p class="sub-text animate-fade-in delay-1">I made something for you.</p>
+
+        <button id="btn-scene-1" class="btn-primary glow-button animate-fade-in delay-2" aria-label="Open the surprise">
           <span>Open the surprise ✦</span>
         </button>
       </div>
     </section>
 
-    <!-- SCENE 2: THE SECRET GIFT -->
-    <section id="scene-2" class="scene" aria-label="Secret Gift Box">
-      <div class="scene-content">
-        <h2 class="scene-title">A little something...</h2>
-        <p class="scene-instruction">Tap the gift to open ✨</p>
+    <!-- SCENE 2: THE LITTLE WORLD -->
+    <section id="scene-2" class="scene" aria-label="The Little World">
+      <div class="scene-content flex-center">
+        <div class="glass-card revelation-card">
+          <div class="card-sparkle">✨</div>
+          <div class="typewriter-container">
+            <p class="reveal-line line-1" data-delay="300">I didn't know how to say it...</p>
+            <p class="reveal-line line-2" data-delay="1600">...so I made this instead.</p>
+            <p class="reveal-line line-3 highlight-line" data-delay="3200">A little place for some of my favourite memories.</p>
+          </div>
+        </div>
 
-        <div id="gift-box" class="gift-box-wrapper" role="button" tabindex="0" aria-label="Tap to open gift box">
-          <div class="gift-glow-effect"></div>
-          <div class="gift-particles-emitter"></div>
-          
-          <div class="gift-lid">
-            <div class="ribbon-bow">
-              <div class="bow-left"></div>
-              <div class="bow-right"></div>
-              <div class="bow-center"></div>
+        <button id="btn-scene-2" class="btn-primary glow-button fade-in-btn hidden" aria-label="Step into our world">
+          <span>Step into our world →</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCENE 3: FIRST LITTLE MEMORIES (Video Call / Expressions) -->
+    <section id="scene-3" class="scene" aria-label="First Memories">
+      <div class="scene-content">
+        <header class="scene-header">
+          <span class="scene-tag">CHAPTER I</span>
+          <h2 class="scene-title">I remember the little things</h2>
+          <p class="scene-desc">Somehow, even your random expressions became memories.</p>
+        </header>
+
+        <div class="phone-memories-container">
+          <!-- Photo 2: Cute Pose Video Call -->
+          <article class="phone-frame-card" data-photo-id="2" role="button" tabindex="0" aria-label="Photo 2: Cute pose during video call">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <span class="call-badge">● Video Call</span>
+              <img src="assets/photos/photo-02.jpg" alt="Cute pose of Shiny during video call" loading="eager" class="phone-img">
+              <div class="phone-overlay"></div>
             </div>
-            <div class="lid-top"></div>
-            <div class="lid-ribbon"></div>
-          </div>
-          
-          <div class="gift-body">
-            <div class="body-ribbon-v"></div>
-            <div class="body-ribbon-h"></div>
-            <div class="gift-inner-light"></div>
-          </div>
+            <div class="phone-caption-box">
+              <span class="memory-tag">Video Call • Photo 02</span>
+              <p class="memory-quote">“Even when apart, seeing you smile on a call could make any day brighter.”</p>
+              <span class="tap-hint">Tap to view ↗</span>
+            </div>
+          </article>
+
+          <!-- Photo 3: Playful/Cute Expression -->
+          <article class="phone-frame-card" data-photo-id="3" role="button" tabindex="0" aria-label="Photo 3: Cute video call expression">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <span class="call-badge">● Memory</span>
+              <img src="assets/photos/photo-03.jpg" alt="Playful cute video call expression" loading="eager" class="phone-img">
+              <div class="phone-overlay"></div>
+            </div>
+            <div class="phone-caption-box">
+              <span class="memory-tag">Tiny Moment • Photo 03</span>
+              <p class="memory-quote">“I don't know why little expressions like this stayed with me... but they did.”</p>
+              <span class="tap-hint">Tap to view ↗</span>
+            </div>
+          </article>
+
+          <!-- Photo 4: Cute Personality Expression -->
+          <article class="phone-frame-card" data-photo-id="4" role="button" tabindex="0" aria-label="Photo 4: Cute personality video call">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <span class="call-badge">● Personality</span>
+              <img src="assets/photos/photo-04.jpg" alt="Silly cute personality moment" loading="eager" class="phone-img">
+              <div class="phone-overlay"></div>
+            </div>
+            <div class="phone-caption-box">
+              <span class="memory-tag">Your Personality • Photo 04</span>
+              <p class="memory-quote">“Your silly expressions and the effortless way you are.”</p>
+              <span class="tap-hint">Tap to view ↗</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="nav-btn-wrapper">
+          <button id="btn-scene-3" class="btn-primary glow-button" aria-label="When we were together">
+            <span>When we were together →</span>
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- SCENE 3: THE MESSAGE -->
-    <section id="scene-3" class="scene" aria-label="Intimate message">
+    <!-- SCENE 4: WHEN WE WERE TOGETHER -->
+    <section id="scene-4" class="scene" aria-label="When We Were Together">
       <div class="scene-content">
-        <div class="glass-card message-card">
-          <div class="card-sparkle-top">✦</div>
-          <div class="card-inner-glow"></div>
-          
-          <div id="message-container" class="message-lines-wrapper">
-            <p class="msg-line" data-delay="300">Hi, Shiny ❤️</p>
-            <p class="msg-line" data-delay="1600">I don't have a big speech.</p>
-            <p class="msg-line highlight-line" data-delay="3200">I just miss you.</p>
-            <p class="msg-line" data-delay="4800">So I made this little place for you.</p>
-          </div>
+        <header class="scene-header">
+          <span class="scene-tag">CHAPTER II</span>
+          <h2 class="scene-title">When we were together</h2>
+          <p class="scene-desc">It was never only the big moments. Sometimes it was just us going somewhere.</p>
+        </header>
+
+        <div class="together-journey-layout">
+
+          <!-- Photo 5: Going Out Selfie -->
+          <article class="journey-card glass-card" data-photo-id="5" role="button" tabindex="0" aria-label="Photo 5: Selfie together going out">
+            <div class="journey-img-box portrait-box">
+              <img src="assets/photos/photo-05.jpg" alt="Selfie together going out" loading="eager" class="journey-img">
+            </div>
+            <div class="journey-caption">
+              <span class="memory-tag">Outing • Photo 05</span>
+              <p class="journey-quote">“A simple happy day of being outside together.”</p>
+            </div>
+          </article>
+
+          <!-- Photo 9: Daytime Beach Selfie -->
+          <article class="journey-card glass-card" data-photo-id="9" role="button" tabindex="0" aria-label="Photo 9: Daytime beach selfie">
+            <div class="journey-img-box landscape-box">
+              <img src="assets/photos/photo-09.jpg" alt="Daytime beach selfie together" loading="eager" class="journey-img">
+            </div>
+            <div class="journey-caption">
+              <span class="memory-tag">Beach Day • Photo 09</span>
+              <p class="journey-quote">“Happy ocean breeze and your smile by the water.”</p>
+            </div>
+          </article>
+
+          <!-- Photo 10: Nighttime Beach/Fair Selfie -->
+          <article class="journey-card glass-card" data-photo-id="10" role="button" tabindex="0" aria-label="Photo 10: Nighttime beach fair memory">
+            <div class="journey-img-box portrait-box">
+              <img src="assets/photos/photo-10.jpg" alt="Nighttime beach fair selfie" loading="eager" class="journey-img">
+            </div>
+            <div class="journey-caption">
+              <span class="memory-tag">Carnival Lights • Photo 10</span>
+              <p class="journey-quote">“An older memory showing that the little moments always mattered.”</p>
+            </div>
+          </article>
+
+          <!-- Photo 11: Auto Mirror Reflection -->
+          <article class="journey-card auto-mirror-card glass-card" data-photo-id="11" role="button" tabindex="0" aria-label="Photo 11: Auto side mirror selfie">
+            <div class="auto-mirror-frame">
+              <div class="mirror-ring"></div>
+              <img src="assets/photos/photo-11.jpg" alt="Auto side mirror reflection selfie" loading="eager" class="mirror-img">
+            </div>
+            <div class="journey-caption">
+              <span class="memory-tag">Unexpected Memory • Photo 11</span>
+              <p class="journey-quote">“An ordinary auto ride turned into a memory I kept.”</p>
+            </div>
+          </article>
+
+          <!-- Photo 14: Holding Hands in Auto -->
+          <article class="journey-card holding-hands-card glass-card" data-photo-id="14" role="button" tabindex="0" aria-label="Photo 14: Holding hands in yellow auto">
+            <div class="holding-hands-frame">
+              <img src="assets/photos/photo-14.jpg" alt="Holding hands inside yellow auto" loading="eager" class="hands-img">
+              <div class="hands-glow"></div>
+            </div>
+            <div class="journey-caption">
+              <span class="memory-tag">Intimate Connection • Photo 14</span>
+              <p class="journey-quote">“Connection and comfort during an ordinary journey.”</p>
+            </div>
+          </article>
+
         </div>
 
-        <button id="btn-scene-3" class="btn-primary glow-button fade-in-btn hidden" aria-label="Continue to next scene">
-          <span>There’s more →</span>
-        </button>
+        <div class="nav-btn-wrapper">
+          <button id="btn-scene-4" class="btn-primary glow-button" aria-label="Step closer">
+            <span>Step closer →</span>
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- SCENE 4: WHY YOU -->
-    <section id="scene-4" class="scene" aria-label="Interactive memory cards">
-      <div class="scene-content wide-content">
-        <h2 class="scene-title-sm">Why you? ✨</h2>
-        <p class="scene-instruction">Tap each card to explore</p>
-
-        <div class="cards-grid">
-          <div class="memory-card float-c1" data-card-id="1" role="button" tabindex="0" aria-label="Memory card 1: Your smile.">
-            <div class="card-glow"></div>
-            <span class="card-icon">✨</span>
-            <p class="card-text">Your smile.</p>
-            <div class="card-check hidden">✓</div>
-          </div>
-
-          <div class="memory-card float-c2" data-card-id="2" role="button" tabindex="0" aria-label="Memory card 2: Your energy.">
-            <div class="card-glow"></div>
-            <span class="card-icon">⚡</span>
-            <p class="card-text">Your energy.</p>
-            <div class="card-check hidden">✓</div>
-          </div>
-
-          <div class="memory-card float-c3" data-card-id="3" role="button" tabindex="0" aria-label="Memory card 3: The little things.">
-            <div class="card-glow"></div>
-            <span class="card-icon">🌙</span>
-            <p class="card-text">The little things.</p>
-            <div class="card-check hidden">✓</div>
-          </div>
-
-          <div class="memory-card float-c4" data-card-id="4" role="button" tabindex="0" aria-label="Memory card 4: Just you.">
-            <div class="card-glow"></div>
-            <span class="card-icon">💖</span>
-            <p class="card-text">Just you.</p>
-            <div class="card-check hidden">✓</div>
-          </div>
-        </div>
-
-        <button id="btn-scene-4" class="btn-primary glow-button hidden" aria-label="Proceed to climax">
-          <span>Okay... one last thing ❤️</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- SCENE 5: THE EMOTIONAL MOMENT (CLIMAX) -->
-    <section id="scene-5" class="scene" aria-label="The Emotional Moment">
+    <!-- SCENE 5: THE CLOSENESS (Major Centerpiece Memories) -->
+    <section id="scene-5" class="scene" aria-label="The Closeness">
       <div class="scene-content">
-        <div id="climax-intro">
-          <h2 class="climax-title">You're special.</h2>
-          <p class="climax-sub">That’s all I wanted to say.</p>
+        <header class="scene-header text-center">
+          <span class="scene-tag">CHAPTER III</span>
+          <h2 class="scene-title">The Closeness</h2>
+          <p class="scene-sub-narrative">
+            "Somewhere along the way...<br>
+            I got used to having you this close.<br>
+            And maybe that's why I miss it so much."
+          </p>
+        </header>
+
+        <div class="closeness-centerpiece-container">
+          
+          <!-- Photo 1: Major Centerpiece (Home / Shoulder / Bench Memory) -->
+          <article class="cinematic-centerpiece-card major-home-card glass-card" data-photo-id="1" role="button" tabindex="0" aria-label="Major Memory Photo 1: Lying on shoulder at home">
+            <div class="cinematic-img-wrapper portrait-wrapper">
+              <img src="assets/photos/photo-01.jpg" alt="Shiny lying on shoulder at home and holding hands on bench" loading="eager" class="cinematic-img">
+              <div class="cinematic-glow-overlay"></div>
+            </div>
+            <div class="cinematic-details">
+              <span class="featured-badge">Major Memory • Photo 01</span>
+              <h3 class="cinematic-title">"Some moments don't need words."</h3>
+              <p class="cinematic-quote">"I still remember how natural it felt to have you this close."</p>
+              <p class="cinematic-subdesc">Holding your hand on the bench, and lying on my shoulder at home.</p>
+            </div>
+          </article>
+
+          <!-- Photo 6: Major Centerpiece (Romantic Eye Contact on Bed) -->
+          <article class="cinematic-centerpiece-card major-bed-card glass-card" data-photo-id="6" role="button" tabindex="0" aria-label="Major Memory Photo 6: Looking into each other's eyes on bed">
+            <div class="cinematic-img-wrapper landscape-wrapper">
+              <img src="assets/photos/photo-06.jpg" alt="Looking into each other's eyes while on bed" loading="eager" class="cinematic-img">
+              <div class="cinematic-glow-overlay"></div>
+            </div>
+            <div class="cinematic-details">
+              <span class="featured-badge">Deep Memory • Photo 06</span>
+              <h3 class="cinematic-title">"When everything else disappeared."</h3>
+              <p class="cinematic-quote">“Then there were moments where looking into your eyes was the only thing that mattered.”</p>
+            </div>
+          </article>
+
+          <!-- Photo 15: Warm Shoulder Selfie -->
+          <article class="cinematic-centerpiece-card shoulder-hug-card glass-card" data-photo-id="15" role="button" tabindex="0" aria-label="Photo 15: Selfie with arm over shoulder">
+            <div class="cinematic-img-wrapper portrait-wrapper">
+              <img src="assets/photos/photo-15.jpg" alt="Selfie with arm over Shiny's shoulder" loading="eager" class="cinematic-img">
+            </div>
+            <div class="cinematic-details">
+              <span class="featured-badge">Warmth • Photo 15</span>
+              <p class="cinematic-quote">“Warmth, closeness and pure affection.”</p>
+            </div>
+          </article>
+
         </div>
 
-        <div id="climax-heart-wrapper" class="climax-heart-container" role="button" tabindex="0" aria-label="Touch the heart for the finale">
+        <div class="nav-btn-wrapper">
+          <button id="btn-scene-5" class="btn-primary glow-button" aria-label="A moment I hold onto">
+            <span>A moment I hold onto →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 6: THE LAST TIME (Emotional Peak: Photo 7) -->
+    <section id="scene-6" class="scene" aria-label="The Last Time">
+      <div class="scene-content flex-center text-center">
+        <span class="scene-tag">CHAPTER IV</span>
+
+        <p class="quiet-intro animate-fade-in">And then there was this.</p>
+
+        <!-- Photo 7: Spotlight Kiss on Cheek -->
+        <article class="spotlight-kiss-container" data-photo-id="7" role="button" tabindex="0" aria-label="Photo 7: Shiny kissing cheek from last meeting">
+          <div class="spotlight-aura"></div>
+          <div class="spotlight-kiss-frame glass-card">
+            <img src="assets/photos/photo-07.jpg" alt="Shiny kissing me on cheek - last meeting" loading="eager" class="spotlight-kiss-img">
+          </div>
+        </article>
+
+        <div class="quiet-caption-box">
+          <h3 class="quiet-title">"Your last kiss on my cheek."</h3>
+          <p class="quiet-text">"I didn't know then how much I would miss it."</p>
+          <p class="quiet-subtext">One of the last moments I got to keep.</p>
+        </div>
+
+        <div class="nav-btn-wrapper margin-top-lg">
+          <button id="btn-scene-6" class="btn-primary glow-button" aria-label="Even from far away">
+            <span>Even from far away →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 7: EVEN FROM FAR AWAY (Distance Video Calls: Photos 8, 16) -->
+    <section id="scene-7" class="scene" aria-label="Even From Far Away">
+      <div class="scene-content">
+        <header class="scene-header">
+          <span class="scene-tag">CHAPTER V</span>
+          <h2 class="scene-title">Even from far away</h2>
+        </header>
+
+        <div class="distance-quote-card glass-card">
+          <p class="dist-line">Even when you weren't here...</p>
+          <p class="dist-line">you somehow still found your way into my day.</p>
+          <div class="dist-highlights">
+            <span class="pill-tag">One call</span>
+            <span class="pill-tag">One silly expression</span>
+            <span class="pill-tag">One smile</span>
+          </div>
+          <p class="dist-conclusion">Enough to make me miss you again.</p>
+        </div>
+
+        <div class="distance-grid">
+          <!-- Photo 8: Video Call Sweet Smile -->
+          <article class="distance-card glass-card" data-photo-id="8" role="button" tabindex="0" aria-label="Photo 8: Sweet smile during video call">
+            <div class="dist-photo-wrapper">
+              <img src="assets/photos/photo-08.jpg" alt="Video call sweet smile screenshot" loading="eager" class="dist-img">
+            </div>
+            <p class="dist-card-text">"Distance, but still feeling connected."</p>
+          </article>
+
+          <!-- Photo 16: Video Call Lying Down Smiling -->
+          <article class="distance-card glass-card" data-photo-id="16" role="button" tabindex="0" aria-label="Photo 16: Cute video call lying down">
+            <div class="dist-photo-wrapper">
+              <img src="assets/photos/photo-16.jpg" alt="Cute video call lying down smiling" loading="eager" class="dist-img">
+            </div>
+            <p class="dist-card-text">"A cute little moment kept safe right here."</p>
+          </article>
+        </div>
+
+        <div class="nav-btn-wrapper">
+          <button id="btn-scene-7" class="btn-primary glow-button" aria-label="Our little secrets">
+            <span>Our little secrets →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 8: LITTLE SECRETS & SIMPLE SMILES (Photos 12, 13) -->
+    <section id="scene-8" class="scene" aria-label="Our Little Secrets">
+      <div class="scene-content flex-center">
+        <span class="scene-tag">CHAPTER VI</span>
+
+        <div class="secrets-duo-container">
+          <!-- Photo 12: Simple Smile Selfie -->
+          <article class="simple-smile-card glass-card" data-photo-id="12" role="button" tabindex="0" aria-label="Photo 12: Cute simple selfie">
+            <div class="simple-smile-wrapper">
+              <img src="assets/photos/photo-12.jpg" alt="Cute simple selfie of Shiny" loading="eager" class="simple-smile-img">
+            </div>
+            <p class="simple-smile-text">"One of those simple pictures that makes me smile every single time."</p>
+          </article>
+
+          <!-- Photo 13: Private Secret Memory -->
+          <article class="secret-card glass-card" data-photo-id="13" role="button" tabindex="0" aria-label="Photo 13: Our private secret memory">
+            <div class="secret-photo-wrapper">
+              <img src="assets/photos/photo-13.jpg" alt="Our private secret memory" loading="eager" class="secret-img">
+              <div class="secret-shimmer"></div>
+            </div>
+            <div class="secret-text-box">
+              <p class="secret-line-1">Some memories...</p>
+              <p class="secret-line-2">...don't need an explanation.</p>
+              <p class="secret-line-3 highlight-heart">Some are just ours. ❤️</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="nav-btn-wrapper margin-top-lg">
+          <button id="btn-scene-8" class="btn-primary glow-button" aria-label="What I miss">
+            <span>What I miss →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 9: THE THINGS I MISS -->
+    <section id="scene-9" class="scene" aria-label="The Things I Miss">
+      <div class="scene-content flex-center text-center">
+        <span class="scene-tag">CHAPTER VII</span>
+
+        <div class="miss-sequence-container">
+          <h2 class="miss-heading">The things I miss...</h2>
+
+          <div class="phrases-fade-list">
+            <p class="miss-phrase p1" data-delay="300">Your smile.</p>
+            <p class="miss-phrase p2" data-delay="1400">Your expressions.</p>
+            <p class="miss-phrase p3" data-delay="2500">The way you looked at me.</p>
+            <p class="miss-phrase p4" data-delay="3600">Your hand in mine.</p>
+            <p class="miss-phrase p5" data-delay="4700">Having you beside me.</p>
+            <p class="miss-phrase p6 highlight-phrase" data-delay="5800">Just you.</p>
+          </div>
+        </div>
+
+        <!-- Floating ambient mini memories backdrop -->
+        <div class="mini-memory-collage" aria-hidden="true">
+          <div class="mini-chip float-1"><img src="assets/photos/photo-01.jpg" alt=""></div>
+          <div class="mini-chip float-2"><img src="assets/photos/photo-07.jpg" alt=""></div>
+          <div class="mini-chip float-3"><img src="assets/photos/photo-09.jpg" alt=""></div>
+          <div class="mini-chip float-4"><img src="assets/photos/photo-14.jpg" alt=""></div>
+          <div class="mini-chip float-5"><img src="assets/photos/photo-15.jpg" alt=""></div>
+        </div>
+
+        <div class="nav-btn-wrapper margin-top-lg">
+          <button id="btn-scene-9" class="btn-primary glow-button fade-in-btn hidden" aria-label="One final thought">
+            <span>One final thought ❤️</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 10: FINAL HEART & CLIMAX -->
+    <section id="scene-10" class="scene" aria-label="Final Message">
+      <div class="scene-content flex-center text-center">
+        
+        <div id="final-text-sequence" class="final-text-sequence">
+          <p class="final-line f1" data-delay="300">I went through all these memories...</p>
+          <p class="final-line f2" data-delay="1800">And I realized...</p>
+          <p class="final-line f3" data-delay="3200">I don't miss just one moment.</p>
+          <p class="final-line f4 highlight-line-lg" data-delay="4800">I miss having you around.</p>
+        </div>
+
+        <!-- Interactive Climax Heart -->
+        <div id="climax-heart-wrapper" class="climax-heart-container" role="button" tabindex="0" aria-label="Interactive final heart. Touch or hold the heart.">
           <div class="climax-ring r1"></div>
           <div class="climax-ring r2"></div>
           <div class="climax-pulse-glow"></div>
@@ -188,27 +500,311 @@
           <svg class="climax-heart-svg" viewBox="0 0 100 90">
             <path d="M10,30 A20,20 0 0,1 50,30 A20,20 0 0,1 90,30 Q90,60 50,85 Q10,60 10,30 Z" fill="url(#heartGrad1)" filter="url(#heartGlow)"/>
           </svg>
-          <span class="climax-prompt">Touch the heart</span>
+          <span class="climax-prompt">Touch or hold the heart ❤️</span>
         </div>
 
         <div id="climax-reveal" class="climax-reveal-container hidden">
           <div class="glass-card climax-card">
-            <p class="final-quote">“I hope this made you smile. ❤️”</p>
-            <p class="final-signature">— someone who misses you</p>
+            <h2 class="final-heart-text">I miss you, Shiny. ❤️</h2>
+            <p class="final-quote">"I just wanted you to know."</p>
+            <p class="final-signature">— Jagadeeshwar</p>
+
+            <div class="quiz-invitation-container">
+              <div class="glow-divider"></div>
+              <p class="quiz-inv-lead">Okay…</p>
+              <p class="quiz-inv-sub">I've shown you quite a lot.</p>
+              <p class="quiz-inv-sub">But there's something I still don't know.</p>
+              <p class="quiz-inv-text">How much of this do you remember?</p>
+              <p class="quiz-inv-lead" style="margin-top:8px">One last little game?</p>
+              <button id="btn-start-quiz" class="btn-primary glow-button" aria-label="Start memory game">
+                <span>Let's see ❤️</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SCENE 11: 8 QUESTION LOVE GAME -->
+    <section id="scene-11" class="scene" aria-label="Love Game">
+      <div class="scene-content">
+        <header class="scene-header text-center">
+          <div class="quiz-meta-bar">
+            <span class="quiz-badge">✦ OUR LITTLE GAME ✦</span>
+            <span id="quiz-progress-text" class="quiz-step-counter">01 / 08</span>
+          </div>
+          <div class="quiz-progress-track">
+            <div id="quiz-progress-fill" class="quiz-progress-fill" style="width: 12.5%;"></div>
+          </div>
+        </header>
+
+        <div class="quiz-card-wrapper">
+          <div id="quiz-card" class="glass-card quiz-card">
+            <!-- Dynamic Question Content Injected by JS -->
           </div>
         </div>
       </div>
     </section>
 
+    <!-- SCENE 12: MEMORY SCORE REPORT & UNLOCKED REWARD -->
+    <section id="scene-12" class="scene" aria-label="Quiz Results and Reward">
+      <div class="scene-content flex-center text-center">
+        
+        <!-- Score Report Card -->
+        <div id="quiz-score-card" class="glass-card score-card">
+          <span class="sparkle-badge">✦ YOUR LITTLE US REPORT ✦</span>
+          
+          <!-- Category Breakdown Bars -->
+          <div class="report-bars-container">
+            <div class="report-bar-row">
+              <div class="report-bar-label">
+                <span>💭 MEMORY</span>
+                <span id="score-memory-val">0%</span>
+              </div>
+              <div class="report-track">
+                <div id="score-memory-fill" class="report-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="report-bar-row">
+              <div class="report-bar-label">
+                <span>❤️ CONNECTION</span>
+                <span id="score-connection-val">0%</span>
+              </div>
+              <div class="report-track">
+                <div id="score-connection-fill" class="report-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="report-bar-row">
+              <div class="report-bar-label">
+                <span>🕰️ NOSTALGIA</span>
+                <span id="score-nostalgia-val">0%</span>
+              </div>
+              <div class="report-track">
+                <div id="score-nostalgia-fill" class="report-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="report-bar-row">
+              <div class="report-bar-label">
+                <span>✨ COURAGE</span>
+                <span id="score-courage-val">0%</span>
+              </div>
+              <div class="report-track">
+                <div id="score-courage-fill" class="report-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="overall-score-box">
+            <span class="overall-label">OVERALL MEMORY SCORE</span>
+            <div class="score-number-wrapper">
+              <span id="score-points" class="score-points">0%</span>
+            </div>
+            <p class="score-disclaimer">"Just a little score I made up for us."</p>
+          </div>
+
+          <h3 id="score-heading" class="score-heading">“Apparently… you remember us pretty well.”</h3>
+          <p id="score-message" class="score-message">“You remembered the little dates. You remembered how our story started. And apparently some things never really leave your head. 😌”</p>
+
+          <div class="unlock-reward-prompt">
+            <div class="glow-divider"></div>
+            <h4 class="unlock-title">🔐 YOU UNLOCKED SOMETHING</h4>
+            <p class="unlock-desc">“Because you made it all the way here… there's something I didn't show you before.”</p>
+            <button id="btn-open-reward" class="btn-primary glow-button" aria-label="Open my reward">
+              <span>Open my reward ❤️</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Revealed Reward & Message Section (Hidden until button click) -->
+        <div id="revealed-reward-section" class="reward-section-container hidden">
+          
+          <article class="reward-photo-card glass-card frame-fullscreen">
+            <div class="reward-photo-wrapper">
+              <img src="assets/photos/photo-16.jpg" alt="Our special memory" loading="eager" class="reward-img">
+              <div class="reward-glow-overlay"></div>
+            </div>
+            <div class="reward-caption-box">
+              <span class="featured-badge">✦ SECRET MEMORY UNLOCKED ✦</span>
+              <p class="reward-line-1">“Maybe this website wasn't really a test.”</p>
+              <p class="reward-line-2">“I just wanted to know if you remembered the little things too.”</p>
+              <p class="reward-line-3 highlight-line-lg">“And now I know.”</p>
+            </div>
+          </article>
+
+          <!-- Her Message Section -->
+          <div class="her-message-card glass-card">
+            <span class="sparkle-badge">✦ KEPT SAFE ✦</span>
+            <h3 class="her-msg-title">You left this for me.</h3>
+
+            <div class="her-quote-box">
+              <p id="display-her-message" class="her-actual-text">“...”</p>
+            </div>
+
+            <p class="her-msg-reply">Thank you for telling me that.</p>
+            <p class="her-msg-forever">I'm keeping this one. ❤️</p>
+          </div>
+
+          <!-- Quiet Final Words -->
+          <div class="final-words-card glass-card">
+            <div class="final-words-lines">
+              <p class="fw-line">I don't know what you expected when you opened this.</p>
+              <p class="fw-line">But I hope somewhere along the way…</p>
+              <p class="fw-line highlight-fw">you remembered how many little moments became ours.</p>
+              <p class="fw-line">I made this because I miss them.</p>
+              <p class="fw-line highlight-fw">And maybe…</p>
+              <p class="fw-line highlight-fw">I miss you a little more.</p>
+            </div>
+            
+            <div class="glow-divider"></div>
+
+            <h3 class="fw-closing-title">That's all, Shiny.</h3>
+            <p class="fw-closing-sub">Thank you for being part of these memories.</p>
+            <p class="final-signature">— Jagadeeshwar ❤️</p>
+          </div>
+
+          <!-- Continuation Teaser: "One More Thing" -->
+          <div id="continue-teaser-card" class="glass-card continue-teaser-card hidden">
+            <div class="glow-divider"></div>
+            <p class="teaser-lead">Actually…</p>
+            <p class="teaser-text">I don't think I'm ready to end this yet.</p>
+            <p class="teaser-sub">So… one more thing?</p>
+            <button id="btn-stay-longer" class="btn-primary glow-button" aria-label="Stay a little longer">
+              <span>Stay a little longer ❤️</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SCENE 13: ONE MORE THING (MINI MEMORY CONVERSATION) -->
+    <section id="scene-13" class="scene" aria-label="One More Thing">
+      <div class="scene-content">
+        <header class="scene-header text-center">
+          <div class="quiz-meta-bar">
+            <span class="quiz-badge">✦ ONE MORE THING ✦</span>
+            <span id="moment-step-counter" class="quiz-step-counter">01 / 08</span>
+          </div>
+          <div class="quiz-progress-track">
+            <div id="moment-progress-fill" class="quiz-progress-fill" style="width: 12.5%;"></div>
+          </div>
+        </header>
+
+        <div id="moment-card-container" class="moment-card-wrapper">
+          <!-- Dynamic Moment Content Injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 14: OUR LITTLE FUTURE -->
+    <section id="scene-14" class="scene" aria-label="Our Little Future">
+      <div class="scene-content flex-center text-center">
+        <header class="scene-header text-center">
+          <span class="scene-tag">✦ CHAPTER IX ✦</span>
+          <h2 class="scene-title">Things we haven't done yet</h2>
+          <p class="scene-desc">Some memories haven't happened yet. Maybe that's the fun part.</p>
+        </header>
+
+        <div class="future-cards-grid">
+          <div class="future-card glass-card" data-future-id="1" role="button" tabindex="0">
+            <div class="future-icon">📍</div>
+            <h3 class="future-title">A place we haven't visited</h3>
+            <p class="future-hidden-note hidden">“Somewhere quiet, where we can just walk with nowhere to rush to.”</p>
+            <span class="tap-hint">Tap to see ↗</span>
+          </div>
+
+          <div class="future-card glass-card" data-future-id="2" role="button" tabindex="0">
+            <div class="future-icon">🎬</div>
+            <h3 class="future-title">A movie we haven't watched together</h3>
+            <p class="future-hidden-note hidden">“Even if it turns out bad, laughing through it together makes it good.”</p>
+            <span class="tap-hint">Tap to see ↗</span>
+          </div>
+
+          <div class="future-card glass-card" data-future-id="3" role="button" tabindex="0">
+            <div class="future-icon">🍜</div>
+            <h3 class="future-title">A food we haven't tried</h3>
+            <p class="future-hidden-note hidden">“Finding that one random spot and deciding if it’s our new favourite.”</p>
+            <span class="tap-hint">Tap to see ↗</span>
+          </div>
+
+          <div class="future-card glass-card" data-future-id="4" role="button" tabindex="0">
+            <div class="future-icon">⛅</div>
+            <h3 class="future-title">A random day we haven't planned</h3>
+            <p class="future-hidden-note hidden">“The best days were always the ones that just happened on their own.”</p>
+            <span class="tap-hint">Tap to see ↗</span>
+          </div>
+
+          <div class="future-card glass-card" data-future-id="5" role="button" tabindex="0">
+            <div class="future-icon">✨</div>
+            <h3 class="future-title">A memory we haven't made yet</h3>
+            <p class="future-hidden-note hidden">“One of those ordinary moments that somehow ends up meaning everything.”</p>
+            <span class="tap-hint">Tap to see ↗</span>
+          </div>
+        </div>
+
+        <div class="future-conclusion-card glass-card">
+          <p class="fc-line">“Okay, Shiny…”</p>
+          <p class="fc-line">“Now I really should let you go.”</p>
+          <p class="fc-sub">“…probably.”</p>
+
+          <div class="future-actions">
+            <button id="btn-replay-memory" class="btn-primary glow-button" aria-label="One more memory">
+              <span>One more? 👀</span>
+            </button>
+            <button id="btn-final-farewell" class="btn-primary glow-button" aria-label="Quiet ending">
+              <span>I'm here ❤️</span>
+            </button>
+          </div>
+
+          <div id="farewell-final-box" class="farewell-final-box hidden">
+            <div class="glow-divider"></div>
+            <p class="farewell-message">“Thank you for staying this long with me.”</p>
+            <p class="farewell-message">“Take care of yourself, Shiny.”</p>
+            <p class="final-signature">— Jagadeeshwar ❤️</p>
+            
+            <div class="restart-wrapper">
+              <button id="btn-restart-journey" class="btn-primary glow-button btn-restart" aria-label="Start our story again">
+                <span>Start our story again ↺</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
   </main>
+
+  <!-- Photo Lightbox Modal -->
+  <div id="photo-lightbox" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-label="Photo detail view">
+    <div class="lightbox-content">
+      <button id="btn-close-lightbox" class="lightbox-close-btn" aria-label="Close photo view">✕</button>
+      <div class="lightbox-image-wrapper">
+        <img id="lightbox-img" src="assets/photos/photo-01.jpg" alt="Memory photo expanded">
+      </div>
+      <div class="lightbox-info">
+        <span id="lightbox-tag" class="lightbox-tag">Memory</span>
+        <h3 id="lightbox-title" class="lightbox-title">Photo Title</h3>
+        <p id="lightbox-caption" class="lightbox-caption">Caption</p>
+      </div>
+    </div>
+  </div>
 
   <!-- Hidden Secret Easter Egg Modal -->
   <div id="easter-egg-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-label="Secret Note">
     <div class="glass-card modal-card">
       <div class="modal-sparkle">🍫✨</div>
-      <h3 class="modal-title">Secret Note</h3>
-      <p class="modal-text">P.S. The chocolate is sweet...<br>but you're sweeter. ❤️</p>
-      <button id="btn-close-modal" class="btn-secondary">Close with a smile 😊</button>
+      <span class="modal-badge">Secret Note</span>
+      <h3 class="modal-title">P.S.</h3>
+      <p class="modal-text">The chocolate is sweet...<br><br><strong class="highlight-sweeter">...but you're sweeter. ❤️</strong></p>
+      <button id="btn-close-modal" class="btn-primary glow-button">
+        <span>Close with a smile 😊</span>
+      </button>
     </div>
   </div>
 
